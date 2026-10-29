@@ -63,4 +63,4 @@ These are benchmark- and implementation-specific findings, not universal algorit
 
 ## Academic integrity and references
 
-The report should cite the actual BO/CMA-ES/benchmarking/noisy-optimisation literature, discuss methodological assumptions, and distinguish preplanned comparisons from post-hoc investigations. Verify every citation and reported numerical value before submission. The complete report and bibliography will be added under `report/`.
+The report should cite the actual BO/CMA-ES/benchmarking/noisy-optimisation literature, discuss methodological assumptions, and distinguish preplanned comparisons from post-hoc investigations. The complete report and bibliography will be added under `report/`.
