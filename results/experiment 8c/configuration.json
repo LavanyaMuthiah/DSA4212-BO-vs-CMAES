@@ -1,0 +1,39 @@
+{
+  "experiment": "8C",
+  "purpose": "Intermediate noise sensitivity",
+  "functions": [
+    "Rosenbrock",
+    "Rastrigin"
+  ],
+  "methods": [
+    "BO",
+    "CMA-ES"
+  ],
+  "budget": 600,
+  "dimension": 5,
+  "noise_fraction": 0.01,
+  "seeds": [
+    3000,
+    3001,
+    3002,
+    3003,
+    3004,
+    3005,
+    3006,
+    3007,
+    3008,
+    3009
+  ],
+  "validation_fractions": [
+    0.0,
+    0.1,
+    0.25
+  ],
+  "shortlist_size": 5,
+  "search_implementation": "Experiment 7",
+  "validation_implementation": "Experiment 7",
+  "noise_scales": {
+    "Rosenbrock": 50776.29120599353,
+    "Rastrigin": 31.85032255297243
+  }
+}

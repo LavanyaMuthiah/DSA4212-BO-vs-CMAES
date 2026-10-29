@@ -1,0 +1,66 @@
+{
+  "experiment": "7",
+  "version": "1.0",
+  "budget": 600,
+  "dimension": 5,
+  "functions": [
+    "Sphere",
+    "Ackley",
+    "Rosenbrock",
+    "Rastrigin"
+  ],
+  "methods": [
+    "BO",
+    "CMA-ES"
+  ],
+  "noise_fractions": [
+    0.05,
+    0.0
+  ],
+  "seeds": [
+    42,
+    123,
+    1000,
+    1001,
+    1002,
+    1003,
+    1004,
+    1005,
+    1006,
+    1007,
+    1008,
+    1009,
+    1010,
+    1011,
+    1012,
+    1013,
+    1014,
+    1015,
+    1016,
+    1017
+  ],
+  "validation_fractions": [
+    0.0,
+    0.1,
+    0.25
+  ],
+  "shortlist_sizes": [
+    5,
+    10
+  ],
+  "initial_points": 10,
+  "noise_scales": {
+    "Sphere": 23.121333413258117,
+    "Ackley": 1.9780023830366442,
+    "Rosenbrock": 50776.29120599353,
+    "Rastrigin": 31.85032255297243
+  },
+  "bo_policy": "Experiment 6A improved BO",
+  "cma_policy": "Experiment 6A CMA-ES",
+  "validation": "Top-K noisy observations, equal repeats",
+  "python": "3.13.18",
+  "numpy": "2.1.3",
+  "scipy": "1.16.3",
+  "sklearn": "1.6.1",
+  "cma": "4.5.0"
+}
