@@ -24,6 +24,58 @@ When the total number of noisy objective evaluations is fixed, how should evalua
 - `scripts/check_results.py`: verifies saved-data consistency and alignment of corrected baselines.
 - `tests/test_smoke.py`: quick CPU reproducibility/budget tests.
 - `report/`: final report source and bibliography **to be added**.
+## Installation and reproducibility
+
+### Environment
+
+The project was developed and tested using Python 3.12 in a Linux-based GitHub Codespaces environment. The optimisation experiments were originally executed on Google Colab using CPU resources.
+
+Python 3.12 is recommended for reproducing the project. Python 3.14 was not used for the successful verification because some pinned scientific dependencies were incompatible with that version.
+
+### Installation
+
+From the repository root, create a Python 3.12 virtual environment:
+
+```bash
+python3.12 -m venv .venv
+source .venv/bin/activate
+```
+
+Install the required dependencies:
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+If the environment does not provide `ensurepip`, create the environment without pip and install pip separately:
+
+```bash
+python3.12 -m venv --without-pip .venv
+source .venv/bin/activate
+curl -sS https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py
+python /tmp/get-pip.py
+python -m pip install -r requirements.txt
+```
+
+### Verification
+
+Run the saved-result consistency checks:
+
+```bash
+python scripts/check_results.py
+```
+
+Run the reproducibility smoke tests:
+
+```bash
+python -m pytest -q tests/
+```
+
+Both verification commands completed successfully in GitHub Codespaces using Python 3.12. The automated test suite reported **3 passed**.
+
+These checks validate saved-result consistency and test a small part of the experimental implementation. They do not rerun the full optimisation study or constitute an independent reproduction of every saved trajectory.
+
+The original experiment notebooks and saved results are provided in `notebooks/` and `results/`, respectively.
 
 ## Quick setup and audit (no optimisation rerun)
 
