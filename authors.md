@@ -1,7 +1,5 @@
 # Authors
 
-- **Name:** [Enter your full name]
-- **Student number:** [Enter your student number]
+- **Name:** Alagammai Lavanya Muthiah
+- **Student number:** A0282879E
 - **Project:** DSA4212 — Bayesian Optimisation versus Evolutionary Strategies
-
-Replace the two bracketed fields before submission. If public, be aware that this information is visible to everyone.
