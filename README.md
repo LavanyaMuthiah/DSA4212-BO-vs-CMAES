@@ -1,53 +1,117 @@
-# DSA4212: Bayesian optimisation versus evolutionary strategies
+# DSA4212: Bayesian Optimisation versus Evolutionary Strategies
 
-A research study of **fixed-budget optimisation under noisy evaluations**. We compare a Gaussian-process Bayesian optimiser (BO) with CMA-ES, investigating how to allocate a fixed evaluation budget between exploration and repeated measurements for final candidate selection.
+A research study of **fixed-budget optimisation under noisy evaluations**, comparing Gaussian-process Bayesian optimisation (BO) with the Covariance Matrix Adaptation Evolution Strategy (CMA-ES).
 
-## Research question
+The project investigates how a limited evaluation budget should be allocated between exploring new candidate solutions and re-evaluating promising candidates before making a final recommendation.
 
-When the total number of noisy objective evaluations is fixed, how should evaluations be divided between searching new points and re-evaluating shortlisted candidates? Does the answer depend on the optimiser, objective landscape, and noise level?
+## Research Question
 
-## Main experimental design
+When the total number of noisy objective evaluations is fixed, how should evaluations be divided between searching new points and re-evaluating shortlisted candidates? Does the optimal allocation depend on the optimisation method, objective landscape, and noise level?
 
-- Four 5-dimensional synthetic benchmarks: Sphere, Ackley, Rosenbrock, Rastrigin, bounded to [-5, 5]^5.
-- Experiment 7: 600 objective evaluations per policy, 20 seeds, noise at 0% and 5% of each objective's global IQR, validation allocation 0%, 10%, 25%; shortlist sizes 5 and 10 (primary analysis K=5).
-- Regret is computed using the noise-free benchmark, not the smallest noisy observation. Evaluation budgets include initial design, search, and repeated measurements. CPU wall-clock runtime is a separate metric.
-- Follow-ups: corrected CMA-ES population sensitivity (8A-R), corrected spatial-diversity shortlist (8B-R), and intermediate 1%-IQR noise (8C, 10 seeds on Rosenbrock and Rastrigin).
-- Noise scale means **global IQR**, not equal local signal-to-noise ratio. The noise standard deviation is supplied to BO; this is an assumption of the controlled benchmark.
+## Experimental Design
 
-## Repository guide
+The main study (Experiment 7) uses:
 
-- `notebooks/`: original exploratory and main research notebooks. **Do not Run All:** the complete experiments can take hours and some cells require mounted Google Drive. The notebooks include superseded exploratory 8A and 8B; corrected 8A-R and 8B-R are authoritative.
-- `src/experiment.py`: standalone reference implementation extracted from the original framework and Experiment 7 cells; no Google Drive dependency for its core functions.
-- `results/`: authoritative CSV summaries and per-policy results for Experiments 7, 8A-R, 8B-R, 8C.
-- `figures/`: final visualisations.
-- `configs/experiment7.json`: original main-study configuration including library versions and noise scales.
-- `scripts/check_results.py`: verifies saved-data consistency and alignment of corrected baselines.
-- `tests/test_smoke.py`: quick CPU reproducibility/budget tests.
-- `report/`: final report source and bibliography **to be added**.
-## Installation and reproducibility
+- **Benchmark functions:** Sphere, Ackley, Rosenbrock and Rastrigin.
+- **Dimension:** Five dimensions, with search domain \([-5,5]^5\).
+- **Evaluation budget:** 600 noisy objective evaluations per policy.
+- **Noise levels:** 0% and 5% of each objective's global interquartile range (IQR).
+- **Validation allocations:** 0%, 10% and 25% of the total evaluation budget.
+- **Random seeds:** 20 independent seeds per experimental condition.
+- **Candidate shortlists:** Sizes 5 and 10, with \(K=5\) used for the primary analysis.
+- **Performance metric:** Noise-free simple regret of the final recommended candidate, evaluated against the known optimum.
+
+The evaluation budget includes initial design evaluations, search evaluations and repeated measurements used for final validation. Computational overhead is measured separately using CPU wall-clock time.
+
+Noise is additive Gaussian, scaled using each benchmark's global objective IQR. This scaling does not imply identical local signal-to-noise ratios across functions.
+
+The BO implementation is supplied with the observation-noise variance, representing a controlled modelling assumption rather than an estimated quantity.
+
+### Follow-up Experiments
+
+The main study was followed by targeted investigations motivated by the observed results:
+
+| Experiment | Purpose |
+|---|---|
+| 8A-R | Corrected CMA-ES population-size sensitivity, testing whether algorithm configuration changes the comparison |
+| 8B-R | Corrected shortlist-diversity comparison, investigating whether spatial diversity improves final candidate selection |
+| 8C | Intermediate noise sensitivity at 1% IQR, using 10 seeds on Rosenbrock and Rastrigin |
+
+Earlier exploratory experiments investigated evaluation-budget scaling, BO configuration, noisy candidate selection, validation allocation and shortlist size.
+
+These preliminary studies informed the final experimental design. The corrected 8A-R and 8B-R results supersede their original exploratory versions.
+
+## Repository Structure
+
+```text
+.
+├── README.md
+├── authors.md
+├── requirements.txt
+├── configs/
+│   └── experiment7.json
+├── src/
+│   └── experiment.py
+├── notebooks/
+│   ├── preliminary_experiments.ipynb
+│   └── main_experiments.ipynb
+├── scripts/
+│   └── check_results.py
+├── tests/
+│   └── test_smoke.py
+├── results/
+│   ├── experiment_7/
+│   ├── experiment_8a_corrected/
+│   ├── experiment_8b_corrected/
+│   └── experiment_8c/
+├── figures/
+└── report/
+    ├── report.tex
+    ├── report.pdf
+    ├── references.bib
+    └── figures/
+```
+
+### Directory Guide
+
+- **`notebooks/`** — Original exploratory and main research notebooks, including experimental development and follow-up investigations. Some cells depend on mounted Google Drive storage. Avoid using *Run All*, as the complete experiments can take several hours.
+- **`src/experiment.py`** — Standalone reference implementation of the optimisation framework, extracted from the original experimental code.
+- **`configs/`** — Main-study configuration, including experimental parameters, library versions and noise scales.
+- **`results/`** — Saved numerical results and per-policy summaries from the authoritative main and corrected follow-up experiments.
+- **`figures/`** — Visualisations generated from the experimental results.
+- **`scripts/check_results.py`** — Saved-result consistency checks, including evaluation accounting and corrected cross-experiment comparisons.
+- **`tests/test_smoke.py`** — Lightweight CPU tests for reproducibility and budget enforcement.
+- **`report/`** — Final submitted PDF report, complete LaTeX source, bibliography and required figures.
+- **`authors.md`** — Author information and student number.
+
+## Installation and Reproducibility
 
 ### Environment
 
-The project was developed and tested using Python 3.12 in a Linux-based GitHub Codespaces environment. The optimisation experiments were originally executed on Google Colab using CPU resources.
+The optimisation experiments were originally executed using **Google Colab with CPU resources**.
 
-Python 3.12 is recommended for reproducing the project. Python 3.14 was not used for the successful verification because some pinned scientific dependencies were incompatible with that version.
+Repository verification was successfully performed using **Python 3.12 in a Linux-based GitHub Codespaces environment**.
+
+Python 3.12 is recommended for reproducing the repository's verification checks because some pinned scientific dependencies were incompatible with Python 3.14.
+
+The original experimental library versions and configuration details are recorded in `configs/experiment7.json`.
 
 ### Installation
 
-From the repository root, create a Python 3.12 virtual environment:
+From the repository root, create and activate a Python 3.12 virtual environment:
 
 ```bash
 python3.12 -m venv .venv
 source .venv/bin/activate
 ```
 
-Install the required dependencies:
+Install the dependencies:
 
 ```bash
 python -m pip install -r requirements.txt
 ```
 
-If the environment does not provide `ensurepip`, create the environment without pip and install pip separately:
+If the environment does not provide `ensurepip`, create the environment without pip and install it separately:
 
 ```bash
 python3.12 -m venv --without-pip .venv
@@ -65,52 +129,133 @@ Run the saved-result consistency checks:
 python scripts/check_results.py
 ```
 
-Run the reproducibility smoke tests:
+Run the automated smoke tests:
 
 ```bash
 python -m pytest -q tests/
 ```
 
-Both verification commands completed successfully in GitHub Codespaces using Python 3.12. The automated test suite reported **3 passed**.
+Both commands completed successfully in GitHub Codespaces using Python 3.12.
 
-These checks validate saved-result consistency and test a small part of the experimental implementation. They do not rerun the full optimisation study or constitute an independent reproduction of every saved trajectory.
+The smoke-test suite reported:
 
-The original experiment notebooks and saved results are provided in `notebooks/` and `results/`, respectively.
-
-## Quick setup and audit (no optimisation rerun)
-
-Python 3.13 was used in the main study. From the repository root:
-
-```bash
-python -m pip install -r requirements.txt
-python scripts/check_results.py
-python -m pytest -q tests/
+```text
+3 passed in 11.50s
 ```
 
-The checks use saved CSVs and a tiny CMA-ES smoke test; they should complete quickly. They **do not reproduce the full 320 search trajectories**. Run from the repository root so Python can find `src`.
+These checks verify saved-result consistency and selected properties of the optimisation implementation. They do **not** independently reproduce every optimisation trajectory or rerun the full experimental study.
 
-## Re-running a small optimiser search
+### Re-running a Small Optimisation Test
+
+A small CMA-ES optimisation can be executed without Google Drive:
 
 ```python
 from src.experiment import E6Evaluator, e6_run_cma, sphere
-import numpy as np
 
-ev = E6Evaluator(sphere, sigma=0.1, seed=100042, budget=18)
+ev = E6Evaluator(
+    sphere,
+    sigma=0.1,
+    seed=100042,
+    budget=18
+)
+
 e6_run_cma(ev, seed=42, search_budget=18)
+
 assert ev.calls == 18
 print(min(ev.y))
 ```
 
-To regenerate the full main study, consult Experiment 7's setup/execution/analysis cells in `notebooks/main_experiments.ipynb`. Those cells save search trajectories and per-policy CSVs to Google Drive. The expensive raw `.npz` search trajectories are **not included in this Git repository**; the saved result tables are. The manifest lists the original trajectories but does not itself provide their bytes. Exact full-trajectory reproduction also depends on the environment and pinned library versions.
+Run this example from the repository root.
 
-## Findings (interpret cautiously)
+### Reproducing the Full Study
 
-- On noisy Rosenbrock, allocating evaluations to validation frequently reduced final recommendation regret, revealing substantial candidate-selection error.
-- On Rastrigin, substantial validation often reduced performance because it displaced exploration.
-- Corrected population-size sensitivity found landscape-dependent effects; default CMA-ES population 8 was not uniformly optimal.
-- The corrected diversity-shortlist comparison did not establish a consistent advantage for spatial diversity; paired uncertainty intervals crossed zero.
-- The 1%-IQR follow-up suggests Rosenbrock selection problems can persist even with reduced global noise.
+The original Experiment 7 setup, execution and analysis cells are available in `notebooks/main_experiments.ipynb`.
 
-These are benchmark- and implementation-specific findings, not universal algorithm rankings. Experiment 8C uses different seeds from Experiment 7, so cross-noise comparisons are not paired. BO and CMA-ES use the common initial design differently; BO's noise variance is specified rather than estimated. Configuration choices were explored unevenly. Wall-clock costs differ dramatically despite equal objective-call budgets. Bootstrap intervals are exploratory and not adjusted for multiple testing.
+The notebooks contain the experimental framework used to generate search trajectories and policy-level results, with outputs saved to Google Drive during execution.
 
+The complete main study consists of **320 search trajectories**, followed by policy-level analysis.
 
+The expensive raw `.npz` search trajectories are not included in this repository. Instead, the repository provides saved result tables, experimental configurations, source code and consistency checks.
+
+The trajectory manifest documents the original runs but does not contain the raw trajectory data.
+
+Exact full-study reproduction requires executing the original experimental framework with the documented configuration and compatible library versions. Runtime and numerical behaviour may also depend on the computing environment.
+
+## Main Findings
+
+### 1. Validation is not universally beneficial
+
+On noisy Rosenbrock, allocating part of the evaluation budget to repeated measurements substantially reduced final recommendation regret.
+
+However, on Rastrigin, larger validation allocations often worsened performance because fewer evaluations remained available for exploration.
+
+This suggests that validation is most useful when noisy candidate selection is a major source of error, rather than when discovering promising candidates remains the primary difficulty.
+
+### 2. Search quality and final recommendation quality are different
+
+An optimiser may discover a strong candidate but fail to recommend it because noisy observations distort the estimated ranking of solutions.
+
+The study distinguishes between:
+
+- **Oracle search regret:** Quality of the best candidate encountered during search.
+- **Shortlist loss:** Additional regret caused by excluding strong candidates from validation.
+- **Ranking loss:** Additional regret caused by selecting a worse candidate from the shortlist.
+
+This decomposition helps explain why repeated validation can improve final recommendations without improving the underlying search trajectory.
+
+### 3. Algorithm configuration affects performance
+
+The corrected CMA-ES population-size experiment found that larger populations substantially improved performance on noisy Rosenbrock, but the same configuration was not uniformly best across all benchmarks.
+
+The comparison therefore depends partly on algorithm configuration, not only on the underlying optimisation method.
+
+### 4. Shortlist diversity did not consistently improve selection
+
+The corrected diversity-aware shortlist experiment did not establish a consistent advantage over selecting candidates based on noisy observations.
+
+The paired uncertainty intervals crossed zero, indicating that the observed differences were not sufficiently conclusive to support a general improvement claim.
+
+This negative result suggests that greater spatial diversity alone does not guarantee better final recommendations.
+
+### 5. Intermediate noise revealed further selection difficulties
+
+The 1%-IQR noise experiment showed that substantial final-selection error can persist on Rosenbrock even when global observation noise is relatively small.
+
+The effectiveness of validation depends on the interaction between noise, objective geometry, search quality and recommendation policy.
+
+## Interpretation and Limitations
+
+The experiments suggest that **the appropriate allocation between exploration and validation depends on the dominant source of final regret**.
+
+When the optimiser encounters promising solutions but cannot reliably distinguish them under noise, repeated validation can be valuable.
+
+When the main challenge is locating good solutions, allocating more evaluations to exploration may be preferable.
+
+The conclusions are specific to the tested benchmarks, implementations and experimental conditions.
+
+Important limitations include:
+
+- The experiments use four five-dimensional synthetic benchmarks rather than real-world objective functions.
+- The noise model is additive, independent Gaussian noise with a specified standard deviation. Heteroskedastic and correlated noise were not investigated.
+- Noise is scaled using global objective IQR, which does not ensure comparable local signal-to-noise ratios.
+- BO is supplied with the observation-noise variance rather than estimating it.
+- BO and CMA-ES use the common initial design differently, and configuration choices received unequal exploratory tuning effort.
+- Evaluation budgets are equal, but CPU wall-clock costs differ substantially.
+- Experiment 8C uses different random seeds from Experiment 7, so cross-noise comparisons are not paired.
+- Bootstrap confidence intervals are exploratory and are not adjusted for multiple testing.
+- The tested validation policies use fixed allocations rather than adaptively deciding when to stop searching.
+
+The study does not establish a universally superior optimisation algorithm or validation allocation. Instead, it provides evidence about the conditions under which different choices can succeed or fail.
+
+## Report and Submission
+
+The final scientific report is available in:
+
+- `report/report.pdf` — Submitted PDF report.
+- `report/report.tex` — Complete LaTeX source.
+- `report/references.bib` — Bibliography.
+- `report/figures/` — Figures required to compile the report.
+
+The report contains the research motivation, methodological justification, experimental development, results, follow-up investigations, interpretation, limitations, conclusions and AI-assistance declaration.
+
+The PDF and repository should be used together to assess the study's findings and reproducibility. The report includes a more detailed AI-assistance declaration distinguishing the author's contributions from AI-supported activities.
