@@ -175,6 +175,30 @@ The original Experiment 7 setup, execution and analysis cells are available in `
 
 The notebooks contain the experimental framework used to generate search trajectories and policy-level results, with outputs saved to Google Drive during execution.
 
+### Google Colab Setup for Full Reproduction
+
+To regenerate the full experimental trajectories, open `notebooks/main_experiments.ipynb` in Google Colab using a CPU runtime.
+
+Mount Google Drive before running the experiment cells:
+
+```python
+from google.colab import drive
+drive.mount('/content/drive')
+```
+
+Create the output directory if it does not already exist:
+
+```python
+from pathlib import Path
+Path('/content/drive/MyDrive/DSA4212_Final_Project').mkdir(
+    parents=True, exist_ok=True
+)
+```
+
+Install the dependencies and run the notebook's setup cells before executing the required experiments in order. The notebook uses Google Drive to save intermediate trajectories and results; ensure that its output paths match the mounted directory.
+
+The full study is computationally expensive and may take several hours on a CPU runtime. The saved CSV results and verification scripts allow the reported findings to be inspected without rerunning every trajectory.
+
 The complete main study consists of **320 search trajectories**, followed by policy-level analysis.
 
 The expensive raw `.npz` search trajectories are not included in this repository. Instead, the repository provides saved result tables, experimental configurations, source code and consistency checks.
