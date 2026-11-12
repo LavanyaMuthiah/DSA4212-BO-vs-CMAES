@@ -113,6 +113,4 @@ To regenerate the full main study, consult Experiment 7's setup/execution/analys
 
 These are benchmark- and implementation-specific findings, not universal algorithm rankings. Experiment 8C uses different seeds from Experiment 7, so cross-noise comparisons are not paired. BO and CMA-ES use the common initial design differently; BO's noise variance is specified rather than estimated. Configuration choices were explored unevenly. Wall-clock costs differ dramatically despite equal objective-call budgets. Bootstrap intervals are exploratory and not adjusted for multiple testing.
 
-## Academic integrity and references
 
-The report should cite the actual BO/CMA-ES/benchmarking/noisy-optimisation literature, discuss methodological assumptions, and distinguish preplanned comparisons from post-hoc investigations. The complete report and bibliography will be added under `report/`.
