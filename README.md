@@ -10,6 +10,8 @@ When the total number of noisy objective evaluations is fixed, how should evalua
 
 ## Experimental Design
 
+Data preparation: No external dataset is required. Objective values are generated directly from the four synthetic benchmark functions. Initial candidate locations are generated using seeded Latin hypercube sampling, and independent Gaussian observation noise is added during evaluation. The benchmark definitions, fixed noise scales, seeds and experimental settings are provided in the source code and configuration files.
+
 The main study (Experiment 7) uses:
 
 - **Benchmark functions:** Sphere, Ackley, Rosenbrock and Rastrigin.
